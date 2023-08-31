@@ -56,33 +56,27 @@ const handleModal = async (tool) =>  {
     const response = await fetch(`https://openapi.programming-hero.com/api/ai/tool/${tool}`)
     const data = await response.json()
     const cardInfo = data.data
-    console.log(cardInfo);
     const modalContainer = document.getElementById('modal-container')
   const div = document.createElement("div");
   div.innerHTML = `
     <!-- Open the modal using ID.showModal() method -->
 <dialog id="my_modal_1" class="modal">
-  <form method="dialog" class="modal-box max-w-[1250px] p-32">
-  <div class="max-w-[1250px] mx-auto grid grid-cols-2 grid-rows-1 gap-6">
+  <form method="dialog" class="modal-box max-w-[1250px] p-6 md:p-12 lg:p-32">
+  <div class="max-w-[1250px] mx-auto grid grid-cols-1 md:grid-cols-2 grid-rows-1 gap-6">
                     <!-- left col -->
                     <div class="p-7 rounded-lg border-[1px] border-[#EB5757] bg-gray-50">
                         <h3 class="text-2xl font-semibold max-w-md">
-                            ChatGPT is an AI-powered chatbot platform that uses OpenAI's GPT technology to simulate
-                            human
-                            conversation.
+                            ${cardInfo.description}
                         </h3>
                         <div class=" text-center rounded-lg grid grid-cols-3 gap-6 mt-6">
-                            <div class="bg-white py-5 px-6">
-                                <h4 class="text-base font-bold text-[#03A30A]">$10/month
-                                    Basic</h4>
+                            <div class="bg-white py-5 px-6 rounded-xl">
+                                <h4 class="text-base font-bold text-[#03A30A]">${cardInfo.pricing[0].plan} ${cardInfo.pricing[0].price}</h4>
                             </div>
-                            <div class="bg-white py-5 px-6">
-                                <h4 class="text-base font-bold text-[#03A30A]">$10/month
-                                    Basic</h4>
+                            <div class="bg-white py-5 px-6 rounded-xl">
+                                <h4 class="text-base font-bold text-[#03A30A]">${cardInfo.pricing[1].plan} ${cardInfo.pricing[0].price}</h4>
                             </div>
-                            <div class="bg-white py-5 px-6">
-                                <h4 class="text-base font-bold text-[#03A30A]">$10/month
-                                    Basic</h4>
+                            <div class="bg-white py-5 px-6 rounded-xl">
+                                <h4 class="text-base font-bold text-[#03A30A]">${cardInfo.pricing[2].plan} ${cardInfo.pricing[0].price}</h4>
                             </div>
                         </div>
                         <div class="grid grid-cols-2 my-6">
@@ -102,7 +96,7 @@ const handleModal = async (tool) =>  {
                     </div>
                     <!-- right col -->
                     <div class="p-7 rounded-lg border-[1px] border-[]">
-                        <img class="rounded-lg h-[340px] " src="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg" alt="">
+                        <img class="rounded-lg h-[340px] " src="${cardInfo.image_link[0]}" alt="">
                         <div class="max-w-[360px] mx-auto">
                             <h3 class="text-center mt-6 text-2xl font-bold mb-4 max-w-">Hi, how are you doing today?</h3>
                         <p class="text-center">I'm doing well, thank you for asking. How can I assist you today?</p>
@@ -113,15 +107,23 @@ const handleModal = async (tool) =>  {
 
 </div>
       <!-- if there is a button in form, it will close the modal -->
-      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+      <button id="reset-btn" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
     </div>
   </form>
 </dialog>
     `;
     modalContainer.appendChild(div)
+    
     const modal = document.getElementById('my_modal_1')
 
     modal.showModal()
+    document.getElementById('reset-btn').addEventListener('click', function(){
+        modalContainer.innerHTML= ''
+    })
+    
 };
+
+
+
 
 loadContent();
